@@ -13,8 +13,11 @@ module.exports=function(){
     router.post('/user/add',User.addUser)
     router.post('/movie/add',Movie.addMovie)
     router.get('/movie/list',Movie.queryList)
+
     router.post('/codetemplate/add',Codetemplate.addTemplate)
-    router.get('/codetemplate/list',Codetemplate.queryList)
+    router.post('/codetemplate/update',(ctx,next)=>Middlewares.findRecord(ctx,next,'codetemplate'),Codetemplate.updateTemplate)
+    router.get('/codetemplate/list',Middlewares.optionRequest,Codetemplate.queryList)
+
     router.get('/uptoken',Qiniu.uptoken)
     return router
 }

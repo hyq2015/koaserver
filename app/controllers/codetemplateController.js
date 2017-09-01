@@ -2,6 +2,8 @@
 let mongoose=require('mongoose')
 
 let Codemodel=mongoose.model('codetemplate')
+let defaultKeys=Codemodel.schema.obj;
+
 let xss=require('xss')
 
 exports.addTemplate=async (ctx,next)=>{
@@ -38,6 +40,40 @@ exports.addTemplate=async (ctx,next)=>{
     }
 }
 
+exports.updateTemplate=async(ctx,next)=>{//更新模板
+    //post方法
+    let returnBody=ctx.currentRecord[0];
+    let body=ctx.request.body;
+    let template=null;
+    let updateObj={};
+    for(let key in defaultKeys){
+        for(let cominkey in body){
+            if(key==cominkey){
+                updateObj[key]=body[cominkey]
+                returnBody[key]=body[cominkey]
+            }
+        }
+    }
+    updateObj.updateDate=Date.now();
+    returnBody.updateDate=Date.now();
+    try {
+        template=await Codemodel.update({_id:body.id},updateObj)
+        ctx.status=200;
+        ctx.body={
+            data:returnBody
+        }
+        return
+    } catch (e) {
+        console.log(e.message)
+        ctx.status=500;
+        ctx.body={
+            message:e.message
+        }
+        return
+        
+    }
+}
+
 exports.queryList=async (ctx,next)=>{
     let pageSize=10;
     let page=1;
@@ -48,7 +84,12 @@ exports.queryList=async (ctx,next)=>{
     }
     let templateList=null;
     try {
-        templateList=await Codemodel.find().limit(pageSize).skip((page-1)*pageSize);
+        if(!ctx.query.key){
+            templateList=await Codemodel.find().limit(pageSize).skip((page-1)*pageSize);
+        }else{
+            templateList=await Codemodel.find({name:new RegExp(ctx.query.key)}).limit(pageSize).skip((page-1)*pageSize);
+        }
+        
         ctx.status=200;
         ctx.body={
             data:templateList
