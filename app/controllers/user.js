@@ -37,7 +37,7 @@ exports.getList=async function(ctx,next){
 exports.addUser=async function(ctx,next){
     console.log(ctx.request.body);//获取POST请求参数
     let body=ctx.request.body;
-    if(!body.openid || !body.mobilePhone || !body.nickname){
+    if(!body.password || !body.mobile || !body.nickname){
         ctx.status=400;
         ctx.body={
             message:'缺少必填字段'
@@ -45,16 +45,21 @@ exports.addUser=async function(ctx,next){
         return
        
     }
-    let openid=ctx.request.body.openid;
+    let mobile=body.mobile;
+    let password=body.password;
+    let nickname=body.nickname;
     let returnBody={};
-    if(openid){
+    if(mobile){
         returnBody=await User.findOne({
-            openid:xss(openid)
+            mobile:xss(mobile),
+            password:xss(password),
+            nickname:xss(nickname)
         })
-        if(returnBody && returnBody.openid){
-            ctx.status=400;
+        if(returnBody && returnBody.mobile){
+            ctx.session.user=body;
+            ctx.status=200;
             ctx.body={
-                message:'此用户已经存在'
+                message:'登录成功'
             }
             return
             
@@ -62,10 +67,11 @@ exports.addUser=async function(ctx,next){
             let user=null;
             try {
                 user=await new User({
-                    openid:openid,
-                    mobilePhone:body.mobilePhone,
+                    mobile:mobile,
+                    password:body.password,
                     nickname:body.nickname
                 }).save();
+                ctx.session.user=user;
                 ctx.status=200;
                 ctx.body={
                     data:user
@@ -85,4 +91,22 @@ exports.addUser=async function(ctx,next){
    
     
     
+}
+
+exports.UserLogout=async function(ctx,next){
+    let user=ctx.session.user;
+    if(user){
+        ctx.session.user=null;
+        ctx.status=200;
+        ctx.body={
+            message:'退出成功'
+        }
+        return
+    }else{
+        ctx.status=400;
+        ctx.body={
+            message:'你还没登录呢'
+        }
+        return
+    }
 }

@@ -11,6 +11,7 @@ module.exports=function(){
     // router.get('/user/list',Middlewares.hasToken,User.getList)
     router.get('/user/list',User.getList)
     router.post('/user/add',User.addUser)
+    router.get('/user/logout',User.UserLogout)
     router.post('/movie/add',Movie.addMovie)
     router.get('/movie/list',Movie.queryList)
 

@@ -28,7 +28,7 @@ exports.findRecord=async(ctx,next,modelname)=>{
         }
         return
     }
-    console.log('表明称:'+modelname)
+    console.log('表名称:'+modelname)
     let existedRecord;
     
     try {
