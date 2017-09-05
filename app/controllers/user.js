@@ -95,6 +95,8 @@ exports.addUser=async function(ctx,next){
 
 exports.UserLogout=async function(ctx,next){
     let user=ctx.session.user;
+    console.log('当前用户:'+JSON.stringify(user))
+    
     if(user){
         ctx.session.user=null;
         ctx.status=200;

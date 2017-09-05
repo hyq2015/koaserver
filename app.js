@@ -60,9 +60,9 @@ app.use(cors())
 
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
-    console.log('当前用户:'+JSON.stringify(user))
     let url=ctx.request.url;
-    if(url.indexOf('/user/add')==-1){
+    console.log(url)
+    if(url.indexOf('/user/add')==-1 && url.indexOf('/user/logout')==-1){
         if(!user){
             ctx.status=403;
             ctx.body={
