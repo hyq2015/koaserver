@@ -1,10 +1,9 @@
 //使用mongoose连接mongodb,并建立用户模型
 const mongoose=require('mongoose');
-let UserSchema=new mongoose.Schema({
-    mobile:String,
-    nickname:String,
-    password:String,
-    bgmusic:String,
+let SongSchema=new mongoose.Schema({
+    name:String,
+    url:String,
+    singer:String,
     creation:{
         type:Date,
         default:Date.now()
@@ -14,13 +13,13 @@ let UserSchema=new mongoose.Schema({
         default:Date.now()
     }
 })
-UserSchema.pre('save',(next)=>{
+SongSchema.pre('save',(next)=>{
     if(!this.isNew){
         this.updateDate=Date.now()
     }
     next()
 })
 
-let UserModel=mongoose.model('user',UserSchema);
+let SongModel=mongoose.model('song',SongSchema);
 
-module.exports=UserModel
+module.exports=SongModel

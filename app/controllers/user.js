@@ -3,7 +3,7 @@ let mongoose=require('mongoose')
 
 let User=mongoose.model('user')
 let xss=require('xss')
-
+let defaultKeys=User.schema.obj;
 
 exports.getList=async function(ctx,next){
     let pageSize=10;
@@ -108,6 +108,55 @@ exports.UserLogout=async function(ctx,next){
         ctx.status=400;
         ctx.body={
             message:'你还没登录呢'
+        }
+        return
+    }
+}
+
+exports.UserUpodate=async function(ctx,next){
+    let returnBody=ctx.session.user;
+    let body=ctx.request.body;
+    let template=null;
+    let updateObj={};
+    for(let key in defaultKeys){
+        for(let cominkey in body){
+            if(key==cominkey){
+                updateObj[key]=body[cominkey]
+                returnBody[key]=body[cominkey]
+            }
+        }
+    }
+    updateObj.updateDate=Date.now();
+    returnBody.updateDate=Date.now();
+    try {
+        template=await User.update({mobile:ctx.session.user.mobile},updateObj)
+        ctx.status=200;
+        ctx.body={
+            data:returnBody
+        }
+        return
+    } catch (e) {
+        console.log(e.message)
+        ctx.status=500;
+        ctx.body={
+            message:e.message
+        }
+        return
+        
+    }
+}
+
+exports.getCurrentUser=async (ctx,next)=>{
+    if(ctx.session.user){
+        ctx.status=200;
+        ctx.body={
+            data:ctx.session.user
+        }
+        return
+    }else{
+        ctx.status=403;
+        ctx.body={
+            message:'请登录'
         }
         return
     }
