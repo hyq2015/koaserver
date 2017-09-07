@@ -34,6 +34,43 @@ exports.getList=async function(ctx,next){
         
     }
 }
+
+exports.userLogin=async(ctx,next)=>{
+    let body=ctx.request.body;
+    if(!body.password || !body.mobile || !body.nickname){
+        ctx.status=400;
+        ctx.body={
+            message:'缺少必填字段'
+        }
+        return
+       
+    }
+    let mobile=body.mobile;
+    let password=body.password;
+    let nickname=body.nickname;
+    let returnBody={};
+    try {
+        returnBody=await User.findOne({
+            mobile:xss(mobile),
+            password:xss(password),
+            nickname:xss(nickname)
+        })
+        if(returnBody && returnBody.mobile){
+            ctx.session.user=returnBody;
+            ctx.status=200;
+            ctx.body={
+                data:returnBody,
+                message:'登录成功'
+            }
+            return
+            
+        }
+    } catch (e) {
+        console.log(e.message)
+        ctx.throw(500,e.message)
+    }
+    
+}
 exports.addUser=async function(ctx,next){
     console.log(ctx.request.body);//获取POST请求参数
     let body=ctx.request.body;
@@ -50,47 +87,31 @@ exports.addUser=async function(ctx,next){
     let nickname=body.nickname;
     let returnBody={};
     if(mobile){
-        returnBody=await User.findOne({
-            mobile:xss(mobile),
-            password:xss(password),
-            nickname:xss(nickname)
-        })
-        if(returnBody && returnBody.mobile){
-            ctx.session.user=returnBody;
+        let user=null;
+        try {
+            user=await new User({
+                mobile:mobile,
+                password:body.password,
+                nickname:body.nickname,
+                bgmusic:null
+            }).save();
+            ctx.session.user=user;
             ctx.status=200;
             ctx.body={
-                data:returnBody,
-                message:'登录成功'
+                data:user
+            }
+            return
+        } catch (e) {
+            console.log(e.message)
+            ctx.status=500;
+            ctx.body={
+                message:e.message
             }
             return
             
-        }else{
-            let user=null;
-            try {
-                user=await new User({
-                    mobile:mobile,
-                    password:body.password,
-                    nickname:body.nickname
-                }).save();
-                ctx.session.user=user;
-                ctx.status=200;
-                ctx.body={
-                    data:user
-                }
-                return
-            } catch (e) {
-                console.log(e.message)
-                ctx.status=500;
-                ctx.body={
-                    message:e.message
-                }
-                return
-                
-            }
         }
+        
     }
-   
-    
     
 }
 

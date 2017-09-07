@@ -12,7 +12,8 @@ module.exports=function(){
     });
     // router.get('/user/list',Middlewares.hasToken,User.getList)
     router.get('/user/list',User.getList)
-    router.post('/user/add',User.addUser)
+    router.post('/user/login',User.userLogin)
+    router.post('/user/signin',User.addUser)
     router.get('/user/logout',User.UserLogout)
     router.post('/user/update',User.UserUpodate)
     router.get('/user/current',User.getCurrentUser)
