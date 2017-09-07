@@ -31,5 +31,6 @@ module.exports=function(){
 
     //相册
     router.post('/album/add',Album.addAlbum)
+    router.get('/album/list',Album.getAlbumList)
     return router
 }
