@@ -5,6 +5,7 @@ let Codetemplate=require('../app/controllers/codetemplateController')
 let Middlewares=require('../app/middlewares/middleware')
 let Qiniu=require('../app/controllers/qiniu')
 let Song=require('../app/controllers/songs')
+let Album=require('../app/controllers/albums')
 module.exports=function(){
     let router = new Router({
         prefix: '/api'
@@ -27,5 +28,8 @@ module.exports=function(){
     router.get('/song/list',Song.songList)
 
     router.get('/uptoken',Qiniu.uptoken)
+
+    //相册
+    router.post('/album/add',Album.addAlbum)
     return router
 }

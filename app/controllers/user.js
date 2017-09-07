@@ -56,9 +56,10 @@ exports.addUser=async function(ctx,next){
             nickname:xss(nickname)
         })
         if(returnBody && returnBody.mobile){
-            ctx.session.user=body;
+            ctx.session.user=returnBody;
             ctx.status=200;
             ctx.body={
+                data:returnBody,
                 message:'登录成功'
             }
             return
@@ -101,7 +102,8 @@ exports.UserLogout=async function(ctx,next){
         ctx.session.user=null;
         ctx.status=200;
         ctx.body={
-            message:'退出成功'
+            message:'退出成功',
+            data:{}
         }
         return
     }else{
