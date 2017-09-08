@@ -55,16 +55,14 @@ exports.userLogin=async(ctx,next)=>{
             password:xss(password),
             nickname:xss(nickname)
         })
-        if(returnBody && returnBody.mobile){
-            ctx.session.user=returnBody;
-            ctx.status=200;
-            ctx.body={
-                data:returnBody,
-                message:'登录成功'
-            }
-            return
-            
+        ctx.session.user=returnBody;
+        ctx.status=200;
+        ctx.body={
+            data:returnBody,
+            message:'登录成功'
         }
+        return
+            
     } catch (e) {
         console.log(e.message)
         ctx.throw(500,e.message)
@@ -87,13 +85,30 @@ exports.addUser=async function(ctx,next){
     let nickname=body.nickname;
     let returnBody={};
     if(mobile){
+        try {
+            let returnBody=await User.findOne({
+                mobile:xss(mobile)
+            })
+            if(returnBody && returnBody.mobile){
+                ctx.status=400;
+                ctx.body={
+                    message:'当前手机号已经注册过'
+                }
+                return
+            }
+            
+        } catch (e) {
+            console.log(e.message)
+            ctx.throw(500,e.message)
+        }
         let user=null;
         try {
             user=await new User({
                 mobile:mobile,
                 password:body.password,
                 nickname:body.nickname,
-                bgmusic:null
+                bgmusic:null,
+                avatar:null
             }).save();
             ctx.session.user=user;
             ctx.status=200;

@@ -13,6 +13,12 @@ let SongSchema=new mongoose.Schema({
         default:Date.now()
     }
 })
+SongSchema.add({
+    author:{
+        type:Object,
+        required:true
+    }
+})
 SongSchema.pre('save',(next)=>{
     if(!this.isNew){
         this.updateDate=Date.now()

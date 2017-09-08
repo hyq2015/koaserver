@@ -21,7 +21,12 @@ exports.addTemplate=async (ctx,next)=>{
         try {
             template=await new Codemodel({
                 name:body.name,
-                template:body.template
+                template:body.template,
+                author:{
+                    mobile:ctx.session.user.mobile,
+                    _id:ctx.session.user._id,
+                    nickname:ctx.session.user.nickname
+                }
             }).save();
             ctx.status=200;
             ctx.body={
@@ -85,9 +90,9 @@ exports.queryList=async (ctx,next)=>{
     let templateList=null;
     try {
         if(!ctx.query.key){
-            templateList=await Codemodel.find().limit(pageSize).skip((page-1)*pageSize);
+            templateList=await Codemodel.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
         }else{
-            templateList=await Codemodel.find({name:new RegExp(ctx.query.key)}).limit(pageSize).skip((page-1)*pageSize);
+            templateList=await Codemodel.find({name:new RegExp(ctx.query.key),'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
         }
         
         ctx.status=200;

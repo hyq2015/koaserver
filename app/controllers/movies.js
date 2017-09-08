@@ -24,7 +24,12 @@ exports.addMovie=async (ctx,next)=>{
                 score:body.score,
                 downloadurl:body.downloadurl,
                 tag:body.tag,
-                desc:body.desc
+                desc:body.desc,
+                author:{
+                    mobile:ctx.session.user.mobile,
+                    _id:ctx.session.user._id,
+                    nickname:ctx.session.user.nickname
+                }
             }).save();
             ctx.status=200;
             ctx.body={
@@ -59,7 +64,7 @@ exports.queryList=async (ctx,next)=>{
     }
     let movieList=null;
     try {
-        movieList=await Movie.find().limit(pageSize).skip((page-1)*pageSize);
+        movieList=await Movie.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
         ctx.status=200;
         ctx.body={
             data:movieList

@@ -13,6 +13,12 @@ let AlbumSchema=new mongoose.Schema({
         default:Date.now()
     }
 })
+AlbumSchema.add({
+    author:{
+        type:Object,
+        required:true
+    }
+})
 AlbumSchema.pre('save',(next)=>{
     if(!this.isNew){
         this.updateDate=Date.now()

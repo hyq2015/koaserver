@@ -1,9 +1,18 @@
 //使用mongoose连接mongodb,并建立用户模型
 const mongoose=require('mongoose');
 let UserSchema=new mongoose.Schema({
-    mobile:String,
-    nickname:String,
-    password:String,
+    mobile:{
+        type:String,
+        required:true
+    },
+    nickname:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
     bgmusic:String,
     creation:{
         type:Date,
@@ -12,6 +21,12 @@ let UserSchema=new mongoose.Schema({
     updateDate:{
         type:Date,
         default:Date.now()
+    }
+})
+//添加新的属性
+UserSchema.add({
+    avatar:{
+        type:String
     }
 })
 UserSchema.pre('save',(next)=>{

@@ -56,7 +56,7 @@ exports.getAlbumList=async (ctx,next)=>{
     }
     let albumList=null;
     try {
-        albumList=await Album.find().limit(pageSize).skip((page-1)*pageSize);
+        albumList=await Album.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
         ctx.status=200;
         ctx.body={
             data:albumList

@@ -19,7 +19,12 @@ exports.addSong=async (ctx,next)=>{
             song=await new Song({
                 name:body.name,
                 url:body.url,
-                singer:body.singer
+                singer:body.singer,
+                author:{
+                    mobile:ctx.session.user.mobile,
+                    _id:ctx.session.user._id,
+                    nickname:ctx.session.user.nickname
+                }
             }).save();
             ctx.status=200;
             ctx.body={
@@ -54,7 +59,8 @@ exports.songList=async (ctx,next)=>{
     }
     let songList=null;
     try {
-        songList=await Song.find().limit(pageSize).skip((page-1)*pageSize);
+        songList=await Song.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
+        console.log(songList)
         ctx.status=200;
         ctx.body={
             data:songList

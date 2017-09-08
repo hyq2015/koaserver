@@ -1,8 +1,14 @@
 //使用mongoose连接mongodb,并建立用户模型
 const mongoose=require('mongoose');
 let CodetemplateSchema=new mongoose.Schema({
-    name:String,
-    template:String,
+    name:{
+        type:String,
+        required:true
+    },
+    template:{
+        type:String,
+        required:true
+    },
     creation:{
         type:Date,
         default:Date.now()
@@ -10,6 +16,12 @@ let CodetemplateSchema=new mongoose.Schema({
     updateDate:{
         type:Date,
         default:Date.now()
+    }
+})
+CodetemplateSchema.add({
+    author:{
+        type:Object,
+        required:true
     }
 })
 CodetemplateSchema.pre('save',(next)=>{

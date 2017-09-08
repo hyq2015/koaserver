@@ -17,6 +17,12 @@ let MovieSchema=new mongoose.Schema({
         default:Date.now()
     }
 })
+MovieSchema.add({
+    author:{
+        type:Object,
+        required:true
+    }
+})
 MovieSchema.pre('save',(next)=>{
     if(!this.isNew){
         this.updateDate=Date.now()
