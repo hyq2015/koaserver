@@ -1,5 +1,6 @@
 
 let mongoose=require('mongoose')
+let moment=require('moment');
 
 let Codemodel=mongoose.model('codetemplate')
 let defaultKeys=Codemodel.schema.obj;
@@ -59,8 +60,8 @@ exports.updateTemplate=async(ctx,next)=>{//更新模板
             }
         }
     }
-    updateObj.updateDate=Date.now();
-    returnBody.updateDate=Date.now();
+    updateObj.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    returnBody.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     try {
         template=await Codemodel.update({_id:body.id},updateObj)
         ctx.status=200;

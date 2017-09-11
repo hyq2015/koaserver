@@ -1,9 +1,8 @@
 
 let mongoose=require('mongoose')
-
+let _=require('lodash');
 let Song=mongoose.model('song')
 let xss=require('xss')
-
 exports.addSong=async (ctx,next)=>{
     let body=ctx.request.body;
     if(!body.name || !body.url || !body.singer){
@@ -59,8 +58,9 @@ exports.songList=async (ctx,next)=>{
     }
     let songList=null;
     try {
-        songList=await Song.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
-        console.log(songList)
+        songList=await Song.find({'author._id':ctx.session.user._id},function(err,doc){
+        }).limit(pageSize).skip((page-1)*pageSize)
+        
         ctx.status=200;
         ctx.body={
             data:songList

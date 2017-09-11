@@ -1,5 +1,7 @@
 //使用mongoose连接mongodb,并建立用户模型
 const mongoose=require('mongoose');
+let moment=require('moment');
+
 let MovieSchema=new mongoose.Schema({
     name:String,
     releaseTime:String,
@@ -9,12 +11,12 @@ let MovieSchema=new mongoose.Schema({
     desc:String,
     tag:String,
     creation:{
-        type:Date,
-        default:Date.now()
+        type:String,
+        default:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     },
     updateDate:{
-        type:Date,
-        default:Date.now()
+        type:String,
+        default:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     }
 })
 MovieSchema.add({
@@ -25,7 +27,7 @@ MovieSchema.add({
 })
 MovieSchema.pre('save',(next)=>{
     if(!this.isNew){
-        this.updateDate=Date.now()
+        this.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     }
     next()
 })

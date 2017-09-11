@@ -1,5 +1,4 @@
 let mongoose=require('mongoose')
-
 let Album=mongoose.model('album')
 let xss=require('xss')
 exports.addAlbum=async(ctx,next)=>{
@@ -57,6 +56,7 @@ exports.getAlbumList=async (ctx,next)=>{
     let albumList=null;
     try {
         albumList=await Album.find({'author._id':ctx.session.user._id}).limit(pageSize).skip((page-1)*pageSize);
+        
         ctx.status=200;
         ctx.body={
             data:albumList

@@ -9,6 +9,15 @@ const DB='mongodb://localhost/gen_db'
 mongoose.Promise=require('bluebird')
 mongoose.connect(DB,{useMongoClient:true})
 
+let db = mongoose.connection;
+db.on('error', function(){
+    console.log('connection error:')
+});
+db.once('open', function() {
+    console.log("we're connected!")
+  // we're connected!
+});
+
 let models_path=path.join(__dirname,'/app/models')
 
 let walk=function(modelpath){

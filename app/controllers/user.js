@@ -1,5 +1,6 @@
 
 let mongoose=require('mongoose')
+let moment=require('moment');
 
 let User=mongoose.model('user')
 let xss=require('xss')
@@ -55,12 +56,20 @@ exports.userLogin=async(ctx,next)=>{
             password:xss(password),
             nickname:xss(nickname)
         })
-        ctx.session.user=returnBody;
-        ctx.status=200;
-        ctx.body={
-            data:returnBody,
-            message:'登录成功'
+        if(returnBody && returnBody.mobile){
+            ctx.session.user=returnBody;
+            ctx.status=200;
+            ctx.body={
+                data:returnBody,
+                message:'登录成功'
+            }
+        }else{
+            ctx.status=400;
+            ctx.body={
+                message:'用户名或密码错误'
+            }
         }
+        
         return
             
     } catch (e) {
@@ -164,8 +173,8 @@ exports.UserUpodate=async function(ctx,next){
             }
         }
     }
-    updateObj.updateDate=Date.now();
-    returnBody.updateDate=Date.now();
+    updateObj.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    returnBody.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     try {
         template=await User.update({mobile:ctx.session.user.mobile},updateObj)
         ctx.status=200;
