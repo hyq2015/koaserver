@@ -46,7 +46,11 @@ const logger=require('koa-logger')
 const session=require('koa-session')
 const bodyParser=require('koa-bodyparser')
 const cors=require('koa-cors')
-let app=new koa()
+let app=new koa();
+// let server = require('http').Server(app.callback());
+// let io = require('socket.io')(server);
+// let serve = require('koa-static');
+// app.use(serve('/'));
 
 const CONFIG = {
     key: 'koa:sess', /** (string) cookie key (default is koa:sess) */

@@ -16,11 +16,13 @@
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "koa-session": "^5.5.0",
+    "koa-static": "^4.0.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "mongoose": "^4.11.8",
     "qiniu": "^7.0.8",
     "sha1": "^1.1.1",
+    "socket.io": "^2.0.3",
     "speakeasy": "^2.0.0",
     "uuid": "^3.1.0",
     "xss": "^0.3.3"
