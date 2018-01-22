@@ -19,20 +19,24 @@ let CodetemplateSchema=new mongoose.Schema({
         type:String,
         default:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     }
-})
+});
 CodetemplateSchema.add({
     author:{
         type:Object,
         required:true
     }
-})
-CodetemplateSchema.pre('save',(next)=>{
-    if(!this.isNew){
-        this.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+});
+
+
+CodetemplateSchema.pre('save', function (next) {
+    if (this.isNew) {
+        this.updateDate = this.creation = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    } else {
+        this.updateDate = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     }
     next()
-})
+});
 
 let CodetemplateModel=mongoose.model('codetemplate',CodetemplateSchema);
 
-module.exports=CodetemplateModel
+module.exports=CodetemplateModel;

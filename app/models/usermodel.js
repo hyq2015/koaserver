@@ -24,20 +24,23 @@ let UserSchema=new mongoose.Schema({
         type:String,
         default:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     }
-})
+});
 //添加新的属性
 UserSchema.add({
     avatar:{
         type:String
     }
-})
-UserSchema.pre('save',(next)=>{
-    if(!this.isNew){
-        this.updateDate=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+});
+
+UserSchema.pre('save', function (next) {
+    if (this.isNew) {
+        this.updateDate = this.creation = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    } else {
+        this.updateDate = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     }
     next()
-})
+});
 
 let UserModel=mongoose.model('user',UserSchema);
 
-module.exports=UserModel
+module.exports=UserModel;
