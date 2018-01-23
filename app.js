@@ -70,6 +70,8 @@ app.use(logger())
 app.use(session(CONFIG,app))
 app.use(bodyParser())
 app.use(cors())
+//配置静态资源请求路径
+app.use(require('koa-static')(__dirname+'/dist/'));
 
 app.use(async (ctx,next) => {
     let user=ctx.session.user;

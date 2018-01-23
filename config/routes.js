@@ -6,6 +6,8 @@ let Middlewares=require('../app/middlewares/middleware')
 let Qiniu=require('../app/controllers/qiniu')
 let Song=require('../app/controllers/songs')
 let Album=require('../app/controllers/albums')
+const fs=require('fs')
+
 module.exports=function(){
     let router = new Router({
         prefix: '/api'
@@ -33,5 +35,11 @@ module.exports=function(){
     //相册
     router.post('/album/add',Album.addAlbum)
     router.get('/album/list',Album.getAlbumList)
+
+    //还可以是用ReadStream，更简单
+    router.get('/',(ctx,next) => {
+        ctx.type = 'html';
+    ctx.body = fs.createReadStream('/index.html');
+})
     return router
 }
