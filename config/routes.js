@@ -76,7 +76,7 @@ module.exports = function () {
         } else {
             return false;
         }
-    });
+    })
     router.get('/currentUser', (ctx, next) => {
         let code = ctx.query.code;
         let tokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WX.AppID + '&secret=' + WX.AppSecret + '&code=' + code + '&grant_type=authorization_code';
@@ -84,7 +84,7 @@ module.exports = function () {
             ctx.status = 200;
             ctx.body = res;
         }).catch((err)=>{
-            console.error(e);
+            console.error(err);
             ctx.status = 400;
             ctx.body = {
                 message: '获取用户信息失败'
