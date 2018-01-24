@@ -78,7 +78,7 @@ app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
     console.log(url)
-    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentUser')==-1){
+    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
         if(!user){
             console.log('未登录')
             // ctx.status=403;
