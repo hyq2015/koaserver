@@ -80,6 +80,7 @@ module.exports = function () {
     router.get('/currentuser',async function (ctx, next){
         console.log('进入获取用户接口了')
         let code = ctx.query.code;
+        console.log(code)
         let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
         let res=await axios.get(url);
         console.log(res.data)
