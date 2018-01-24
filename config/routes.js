@@ -43,6 +43,7 @@ module.exports=function(){
 
     })
     router.get('/wechat', (ctx,next)=> {
+
         // 获取微信的请求,注意是 get
         let signature = ctx.query.signature;
         let echostr = ctx.query.echostr;
@@ -61,6 +62,7 @@ module.exports=function(){
         let sha1 = crypto.createHash('sha1');
         sha1.update(tmpStr);
         let resStr = sha1.digest('hex');
+        console.log('进入了微信服务器验证!');
         console.log(signature, 'resStr: ', resStr);
 
         // 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信,
