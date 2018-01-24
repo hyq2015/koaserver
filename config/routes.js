@@ -39,13 +39,15 @@ module.exports=function(){
     //还可以是用ReadStream，更简单
     router.get('/',(ctx,next) => {
         ctx.type = 'html';
-    ctx.body = fs.createReadStream('/index.html');
-    router.get('/wechat', function *() {
+        ctx.body = fs.createReadStream('/index.html');
+
+    })
+    router.get('/wechat', (ctx,next)=> {
         // 获取微信的请求,注意是 get
-        let signature = this.query.signature;
-        let echostr = this.query.echostr;
-        let timestamp = this.query.timestamp;
-        let nonce = this.query.nonce;
+        let signature = ctx.query.signature;
+        let echostr = ctx.query.echostr;
+        let timestamp = ctx.query.timestamp;
+        let nonce = ctx.query.nonce;
 
         // 这里的token 要和你表单上面的token一致
         let token = 'fighterapp';
@@ -69,6 +71,5 @@ module.exports=function(){
             return false;
         }
     });
-})
     return router
 }
