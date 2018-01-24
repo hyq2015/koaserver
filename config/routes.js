@@ -82,8 +82,9 @@ module.exports = function () {
         let code = ctx.query.code;
         let tokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WX.AppID + '&secret=' + WX.AppSecret + '&code=' + code + '&grant_type=authorization_code';
         let res=await axios.get(tokenURL);
+        console.log(res.data)
         ctx.status = 200;
-        ctx.body = res;
+        ctx.body = res.data;
         // axios.get(tokenURL).then((res)=>{
         //     ctx.status = 200;
         //     ctx.body = res;
