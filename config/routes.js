@@ -77,20 +77,23 @@ module.exports = function () {
             return false;
         }
     })
-    router.get('/currentuser', (ctx, next) => {
+    router.get('/currentuser',async function (ctx, next){
         console.log('进入获取用户接口了')
         let code = ctx.query.code;
         let tokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WX.AppID + '&secret=' + WX.AppSecret + '&code=' + code + '&grant_type=authorization_code';
-        axios.get(tokenURL).then((res)=>{
-            ctx.status = 200;
-            ctx.body = res;
-        }).catch((err)=>{
-            console.error(err);
-            ctx.status = 400;
-            ctx.body = {
-                message: '获取用户信息失败'
-            };
-        })
+        let res=await axios.get(tokenURL);
+        ctx.status = 200;
+        ctx.body = res;
+        // axios.get(tokenURL).then((res)=>{
+        //     ctx.status = 200;
+        //     ctx.body = res;
+        // }).catch((err)=>{
+        //     console.error(err);
+        //     ctx.status = 400;
+        //     ctx.body = {
+        //         message: '获取用户信息失败'
+        //     };
+        // })
 
     });
     return router
