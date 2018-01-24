@@ -77,7 +77,8 @@ module.exports = function () {
             return false;
         }
     })
-    router.get('/currentUser', (ctx, next) => {
+    router.get('/currentuser', (ctx, next) => {
+        console.log('进入获取用户接口了')
         let code = ctx.query.code;
         let tokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WX.AppID + '&secret=' + WX.AppSecret + '&code=' + code + '&grant_type=authorization_code';
         axios.get(tokenURL).then((res)=>{
