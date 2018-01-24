@@ -9,9 +9,10 @@ let Album=require('../app/controllers/albums');
 const fs=require('fs');
 let crypto=require('crypto');
 module.exports=function(){
-    let router = new Router({
-        prefix: '/api'
-    });
+    // let router = new Router({
+    //     prefix: '/api'
+    // });
+    let router=new Router();
     // router.get('/user/list',Middlewares.hasToken,User.getList)
     router.get('/user/list',User.getList)
     router.post('/user/login',User.userLogin)
