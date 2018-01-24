@@ -6,8 +6,6 @@ const fs=require('fs')
 const path=require('path')
 const mongoose=require('mongoose')
 const DB='mongodb://localhost/gen_db'
-let WX=require('./config/wx');
-let https=require('https')
 //连接数据库
 mongoose.Promise=require('bluebird')
 mongoose.connect(DB,{useMongoClient:true})
@@ -96,17 +94,7 @@ app.use(async (ctx,next) => {
 });
 app.use(router.routes())
     .use(router.allowedMethods())
-let tokenURL='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+WX.AppID+'&secret='+WX.AppSecret;
-https.get(tokenURL,(res)=>{
-    console.log('statusCode:', res.statusCode);
-    console.log('headers:', res.headers);
-    console.log(res);
-    res.on('data', (d) => {
-        process.stdout.write(d);
-    });
-}).on('error', (e) => {
-    console.error(e);
-});
+
 
 
 app.listen(port,()=>{

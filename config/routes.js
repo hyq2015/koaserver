@@ -8,6 +8,9 @@ let Song=require('../app/controllers/songs');
 let Album=require('../app/controllers/albums');
 const fs=require('fs');
 let crypto=require('crypto');
+let WX=require('./wx');
+let https=require('https')
+
 module.exports=function(){
     // let router = new Router({
     //     prefix: '/api'
@@ -73,6 +76,28 @@ module.exports=function(){
         } else {
             return false;
         }
+    });
+    router.get('/currentUser',(ctx,next)=>{
+            let code=ctx.query.code;
+            let tokenURL='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+WX.AppID+'&secret='+WX.AppSecret+'&code='+code+'&grant_type=authorization_code';
+            https.get(tokenURL,(res)=>{
+            console.log('statusCode:', res.statusCode);
+            console.log('headers:', res.headers);
+            console.log(res);
+            // res.on('data', (d) => {
+            //     process.stdout.write(d);
+            // });
+            ctx.status=200;
+            ctx.body = {
+                user:res
+            };
+        }).on('error', (e) => {
+            console.error(e);
+            ctx.status=400;
+            ctx.body = {
+                message:'获取用户信息失败'
+            };
+        });
     });
     return router
 }
