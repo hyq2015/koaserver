@@ -81,7 +81,7 @@ module.exports=function(){
             let code=ctx.query.code;
             let tokenURL='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+WX.AppID+'&secret='+WX.AppSecret+'&code='+code+'&grant_type=authorization_code';
             https.get(tokenURL,(res)=>{
-                console.log('statusCode:', res.statusCode);
+                // console.log('statusCode:', res.statusCode);
                 // console.log('headers:', res.headers);
                 // console.log(res);
                 // res.on('data', (d) => {
@@ -91,6 +91,7 @@ module.exports=function(){
                 ctx.body = {
                     user:res
                 };
+                return
             }).on('error', (e) => {
                 console.error(e);
                 ctx.status=400;
