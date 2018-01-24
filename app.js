@@ -80,10 +80,14 @@ app.use(async (ctx,next) => {
     console.log(url)
     if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1){
         if(!user){
+            console.log('未登录')
+            // ctx.status=403;
+            // ctx.body={
+            //     message:'请登录'
+            // };
+            ctx.type = 'html';
             ctx.status=403;
-            ctx.body={
-                message:'请登录'
-            }
+            ctx.body = fs.createReadStream('./dist/index.html');
             return
         }
     }
