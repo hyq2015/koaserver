@@ -74,25 +74,25 @@ app.use(cors())
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
 
-app.use(async (ctx,next) => {
-    let user=ctx.session.user;
-    let url=ctx.request.url;
-    console.log(url)
-    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1){
-        if(!user){
-            console.log('未登录')
-            // ctx.status=403;
-            // ctx.body={
-            //     message:'请登录'
-            // };
-            ctx.type = 'html';
-            ctx.status=403;
-            ctx.body = fs.createReadStream('./dist/index.html');
-            return
-        }
-    }
-    return next()
-});
+// app.use(async (ctx,next) => {
+//     let user=ctx.session.user;
+//     let url=ctx.request.url;
+//     console.log(url)
+//     if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1){
+//         if(!user){
+//             console.log('未登录')
+//             // ctx.status=403;
+//             // ctx.body={
+//             //     message:'请登录'
+//             // };
+//             ctx.type = 'html';
+//             ctx.status=403;
+//             ctx.body = fs.createReadStream('./dist/index.html');
+//             return
+//         }
+//     }
+//     return next()
+// });
 app.use(router.routes())
     .use(router.allowedMethods())
 
