@@ -1,52 +1,52 @@
-let Router=require('koa-router');
-let User=require('../app/controllers/user');
-let Movie=require('../app/controllers/movies');
-let Codetemplate=require('../app/controllers/codetemplateController');
-let Middlewares=require('../app/middlewares/middleware');
-let Qiniu=require('../app/controllers/qiniu');
-let Song=require('../app/controllers/songs');
-let Album=require('../app/controllers/albums');
-const fs=require('fs');
-let crypto=require('crypto');
-let WX=require('./wx');
-let https=require('https')
+let Router = require('koa-router');
+let User = require('../app/controllers/user');
+let Movie = require('../app/controllers/movies');
+let Codetemplate = require('../app/controllers/codetemplateController');
+let Middlewares = require('../app/middlewares/middleware');
+let Qiniu = require('../app/controllers/qiniu');
+let Song = require('../app/controllers/songs');
+let Album = require('../app/controllers/albums');
+const fs = require('fs');
+let crypto = require('crypto');
+let WX = require('./wx');
+let axios = require('axios')
 
-module.exports=function(){
+module.exports = function () {
     // let router = new Router({
     //     prefix: '/api'
     // });
-    let router=new Router();
+    let router = new Router();
     // router.get('/user/list',Middlewares.hasToken,User.getList)
-    router.get('/user/list',User.getList)
-    router.post('/user/login',User.userLogin)
-    router.post('/user/signin',User.addUser)
-    router.get('/user/logout',User.UserLogout)
-    router.post('/user/update',User.UserUpodate)
-    router.get('/user/current',User.getCurrentUser)
+    router.get('/user/list', User.getList)
+    router.post('/user/login', User.userLogin)
+    router.post('/user/signin', User.addUser)
+    router.get('/user/logout', User.UserLogout)
+    router.post('/user/update', User.UserUpodate)
+    router.get('/user/current', User.getCurrentUser)
 
-    router.post('/movie/add',Movie.addMovie)
-    router.get('/movie/list',Movie.queryList)
+    router.post('/movie/add', Movie.addMovie)
+    router.get('/movie/list', Movie.queryList)
 
-    router.post('/codetemplate/add',Codetemplate.addTemplate)
-    router.post('/codetemplate/update',(ctx,next)=>Middlewares.findRecord(ctx,next,'codetemplate'),Codetemplate.updateTemplate)
-    router.get('/codetemplate/list',Middlewares.optionRequest,Codetemplate.queryList)
+    router.post('/codetemplate/add', Codetemplate.addTemplate)
+    router.post('/codetemplate/update', (ctx, next) => Middlewares.findRecord(ctx, next, 'codetemplate'), Codetemplate.updateTemplate)
+    router.get('/codetemplate/list', Middlewares.optionRequest, Codetemplate.queryList)
 
-    router.post('/song/add',Song.addSong)
-    router.get('/song/list',Song.songList)
+    router.post('/song/add', Song.addSong)
+    router.get('/song/list', Song.songList)
 
-    router.get('/uptoken',Qiniu.uptoken)
+    router.get('/uptoken', Qiniu.uptoken)
 
     //相册
-    router.post('/album/add',Album.addAlbum)
-    router.get('/album/list',Album.getAlbumList)
+    router.post('/album/add', Album.addAlbum)
+    router.get('/album/list', Album.getAlbumList)
 
     //还可以是用ReadStream，更简单
-    router.get('/',(ctx,next) => {
+    router.get('/', (ctx, next) => {
         ctx.type = 'html';
         ctx.body = fs.createReadStream('/index.html');
 
     })
-    router.get('/wechat', (ctx,next)=> {
+    router.get('/wechat', (ctx, next) => {
 
         // 获取微信的请求,注意是 get
         let signature = ctx.query.signature;
@@ -77,28 +77,20 @@ module.exports=function(){
             return false;
         }
     });
-    router.get('/currentUser',(ctx,next)=>{
-            let code=ctx.query.code;
-            let tokenURL='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+WX.AppID+'&secret='+WX.AppSecret+'&code='+code+'&grant_type=authorization_code';
-            https.get(tokenURL,(res)=>{
-                // console.log('statusCode:', res.statusCode);
-                // console.log('headers:', res.headers);
-                // console.log(res);
-                // res.on('data', (d) => {
-                //     process.stdout.write(d);
-                // });
-                ctx.status=200;
-                ctx.body = {
-                    user:res
-                };
-                return
-            }).on('error', (e) => {
-                console.error(e);
-                ctx.status=400;
-                ctx.body = {
-                    message:'获取用户信息失败'
-                };
-            });
+    router.get('/currentUser', (ctx, next) => {
+        let code = ctx.query.code;
+        let tokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WX.AppID + '&secret=' + WX.AppSecret + '&code=' + code + '&grant_type=authorization_code';
+        axios.get(tokenURL).then((res)=>{
+            ctx.status = 200;
+            ctx.body = res;
+        }).catch((err)=>{
+            console.error(e);
+            ctx.status = 400;
+            ctx.body = {
+                message: '获取用户信息失败'
+            };
+        })
+
     });
     return router
 }

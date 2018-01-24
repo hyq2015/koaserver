@@ -9,6 +9,7 @@
   "author": "ricky",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "bluebird": "^3.5.0",
     "http": "0.0.0",
     "https": "^1.0.0",
