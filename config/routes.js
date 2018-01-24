@@ -68,7 +68,7 @@ module.exports=function(){
         // 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信,
         // 如果匹配,返回echoster , 不匹配则返回error
         if (resStr === signature) {
-            this.body = echostr;
+            ctx.body = echostr;
         } else {
             return false;
         }
