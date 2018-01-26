@@ -81,19 +81,19 @@ app.use(async (ctx,next) => {
     // if(url.indexOf('/baiyue/statistic')!=-1){
     //     return next()
     // }else
-    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1 && url.indexOf('statistic')==-1){
-        if(!user){
-            console.log('未登录')
-            // ctx.status=403;
-            // ctx.body={
-            //     message:'请登录'
-            // };
-            ctx.type = 'html';
-            // ctx.status=403;
-            ctx.body = fs.createReadStream('./dist/index.html');
-            return
-        }
-    }
+    // if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1 && url.indexOf('statistic')==-1){
+    //     if(!user){
+    //         console.log('未登录')
+    //         // ctx.status=403;
+    //         // ctx.body={
+    //         //     message:'请登录'
+    //         // };
+    //         ctx.type = 'html';
+    //         // ctx.status=403;
+    //         ctx.body = fs.createReadStream('./dist/index.html');
+    //         return
+    //     }
+    // }
     return next()
 });
 app.use(router.routes())
