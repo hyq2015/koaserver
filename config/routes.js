@@ -42,7 +42,7 @@ module.exports = function () {
     router.get('/album/list', Album.getAlbumList)
 
     //维权统计
-    router.post('/baiyue/statistic',Statistic.addAuthUser)
+    router.post('/statistic',Statistic.addAuthUser)
 
     //还可以是用ReadStream，更简单
     router.get('/', (ctx, next) => {
