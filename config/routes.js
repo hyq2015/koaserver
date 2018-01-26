@@ -45,7 +45,7 @@ module.exports = function () {
     router.post('/statistic',Statistic.addAuthUser)
 
     //还可以是用ReadStream，更简单
-    router.get('/', (ctx, next) => {
+    router.get('/baiyue', (ctx, next) => {
         ctx.type = 'html';
         ctx.body = fs.createReadStream('/index.html');
 
