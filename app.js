@@ -78,9 +78,10 @@ app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
     console.log(url)
-    if(url.indexOf('/baiyue/statistic')!=-1){
-        return next()
-    }else if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
+    // if(url.indexOf('/baiyue/statistic')!=-1){
+    //     return next()
+    // }else
+    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
         if(!user){
             console.log('未登录')
             // ctx.status=403;
@@ -88,7 +89,7 @@ app.use(async (ctx,next) => {
             //     message:'请登录'
             // };
             ctx.type = 'html';
-            ctx.status=403;
+            // ctx.status=403;
             ctx.body = fs.createReadStream('./dist/index.html');
             return
         }
