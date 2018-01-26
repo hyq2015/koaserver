@@ -21,10 +21,10 @@ exports.addAuthUser=async(ctx,next)=>{
                 name:xss(name),
                 roomNumber:xss(roomNumber)
             })
-            if(returnBody && returnBody.phone && returnBody.roomNumber){
+            if(returnBody && returnBody.phone && returnBody.roomNumber && returnBody.name){
                 ctx.status=400;
                 ctx.body={
-                    message:'当前手机号跟房号已经填写过'
+                    message:'你的信息已经统计过了,请勿重复提交'
                 }
                 return
             }
