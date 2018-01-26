@@ -80,8 +80,7 @@ app.use(async (ctx,next) => {
     console.log(url)
     if(url.indexOf('/baiyue/statistic')!=-1){
         return next()
-    }
-    if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
+    }else if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
         if(!user){
             console.log('未登录')
             // ctx.status=403;
