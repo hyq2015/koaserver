@@ -13,10 +13,10 @@ let WX = require('./wx');
 let axios = require('axios')
 
 module.exports = function () {
-    let router = new Router({
-        prefix: '/api'
-    });
-    // let router = new Router();
+    // let router = new Router({
+    //     prefix: '/api'
+    // });
+    let router = new Router();
     // router.get('/user/list',Middlewares.hasToken,User.getList)
     router.get('/user/list', User.getList)
     router.post('/user/login', User.userLogin)
@@ -48,7 +48,7 @@ module.exports = function () {
     router.get('/baiyue', (ctx, next) => {
         console.log('进入我的这个应用了')
         ctx.type = 'html';
-        ctx.body = fs.createReadStream('./dist/index.html');
+        ctx.body = fs.createReadStream('./dist/index.html');//以根目录为根路径
 
     })
     router.get('/wechat', (ctx, next) => {
