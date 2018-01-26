@@ -48,7 +48,7 @@ module.exports = function () {
     router.get('/baiyue', (ctx, next) => {
         console.log('进入我的这个应用了')
         ctx.type = 'html';
-        ctx.body = fs.createReadStream('/index.html');
+        ctx.body = fs.createReadStream('../dist/index.html');
 
     })
     router.get('/wechat', (ctx, next) => {
