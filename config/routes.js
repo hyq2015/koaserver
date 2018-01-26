@@ -6,16 +6,17 @@ let Middlewares = require('../app/middlewares/middleware');
 let Qiniu = require('../app/controllers/qiniu');
 let Song = require('../app/controllers/songs');
 let Album = require('../app/controllers/albums');
+let Statistic = require('../app/controllers/statistics');
 const fs = require('fs');
 let crypto = require('crypto');
 let WX = require('./wx');
 let axios = require('axios')
 
 module.exports = function () {
-    // let router = new Router({
-    //     prefix: '/api'
-    // });
-    let router = new Router();
+    let router = new Router({
+        prefix: '/api'
+    });
+    // let router = new Router();
     // router.get('/user/list',Middlewares.hasToken,User.getList)
     router.get('/user/list', User.getList)
     router.post('/user/login', User.userLogin)
@@ -39,6 +40,9 @@ module.exports = function () {
     //相册
     router.post('/album/add', Album.addAlbum)
     router.get('/album/list', Album.getAlbumList)
+
+    //维权统计
+    router.post('/baiyue/statistic',Statistic.addAuthUser)
 
     //还可以是用ReadStream，更简单
     router.get('/', (ctx, next) => {

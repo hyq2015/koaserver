@@ -1,7 +1,7 @@
 'use strict'
 //加载所有表,在mongodb中建模
-// let port='8989';
-let port='80';
+let port='8989';
+// let port='80';
 const fs=require('fs')
 const path=require('path')
 const mongoose=require('mongoose')
@@ -78,6 +78,9 @@ app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
     console.log(url)
+    if(url.indexOf('/baiyue/statistic')!=-1){
+        return next()
+    }
     if(url.indexOf('/user/login')==-1 && url.indexOf('/user/logout')==-1 && url.indexOf('/user/signin')==-1 && url.indexOf('/currentuser')==-1){
         if(!user){
             console.log('未登录')
