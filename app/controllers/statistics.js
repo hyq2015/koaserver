@@ -24,7 +24,7 @@ exports.addAuthUser=async(ctx,next)=>{
             if(returnBody && returnBody.phone && returnBody.roomNumber && returnBody.name){
                 ctx.status=400;
                 ctx.body={
-                    message:'你的信息已经统计过了,请勿重复提交'
+                    message:'当前信息已经统计过了,请勿重复提交'
                 }
                 return
             }
