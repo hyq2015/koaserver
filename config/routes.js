@@ -6,6 +6,7 @@ let Middlewares = require('../app/middlewares/middleware');
 let Qiniu = require('../app/controllers/qiniu');
 let Song = require('../app/controllers/songs');
 let Album = require('../app/controllers/albums');
+let Dog = require('../app/controllers/dog');
 let Statistic = require('../app/controllers/statistics');
 const fs = require('fs');
 let crypto = require('crypto');
@@ -18,28 +19,31 @@ module.exports = function () {
     // });
     let router = new Router();
     // router.get('/user/list',Middlewares.hasToken,User.getList)
-    router.get('/user/list', User.getList)
-    router.post('/user/login', User.userLogin)
-    router.post('/user/signin', User.addUser)
-    router.get('/user/logout', User.UserLogout)
-    router.post('/user/update', User.UserUpodate)
-    router.get('/user/current', User.getCurrentUser)
+    router.get('/api/user/list', User.getList)
+    router.post('/api/user/login', User.userLogin)
+    router.post('/api/user/signin', User.addUser)
+    router.get('/api/user/logout', User.UserLogout)
+    router.post('/api/user/update', User.UserUpodate)
+    router.get('/api/user/current', User.getCurrentUser)
 
-    router.post('/movie/add', Movie.addMovie)
-    router.get('/movie/list', Movie.queryList)
+    router.post('/api/movie/add', Movie.addMovie)
+    router.get('/api/movie/list', Movie.queryList)
 
-    router.post('/codetemplate/add', Codetemplate.addTemplate)
-    router.post('/codetemplate/update', (ctx, next) => Middlewares.findRecord(ctx, next, 'codetemplate'), Codetemplate.updateTemplate)
-    router.get('/codetemplate/list', Middlewares.optionRequest, Codetemplate.queryList)
+    router.post('/api/codetemplate/add', Codetemplate.addTemplate)
+    router.post('/api/codetemplate/update', (ctx, next) => Middlewares.findRecord(ctx, next, 'codetemplate'), Codetemplate.updateTemplate)
+    router.get('/api/codetemplate/list', Middlewares.optionRequest, Codetemplate.queryList)
 
-    router.post('/song/add', Song.addSong)
-    router.get('/song/list', Song.songList)
+    router.post('/api/song/add', Song.addSong)
+    router.get('/api/song/list', Song.songList)
 
-    router.get('/uptoken', Qiniu.uptoken)
+    router.get('/api/uptoken', Qiniu.uptoken)
 
     //相册
-    router.post('/album/add', Album.addAlbum)
-    router.get('/album/list', Album.getAlbumList)
+    router.post('/api/album/add', Album.addAlbum)
+    router.get('/api/album/list', Album.getAlbumList)
+
+    //狗狗
+    router.post('/api/dog/add', Dog.addDog)
 
     //维权统计
     router.post('/statistic',Statistic.addAuthUser)
@@ -82,7 +86,7 @@ module.exports = function () {
             return false;
         }
     })
-    router.get('/currentuser',async function (ctx, next){
+    router.get('/api/currentuser',async function (ctx, next){
         console.log('进入获取用户接口了')
         let code = ctx.query.code;
         console.log(code)
