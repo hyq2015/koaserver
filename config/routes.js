@@ -44,6 +44,8 @@ module.exports = function () {
 
     //狗狗
     router.post('/api/dog/add', Dog.addDog)
+    router.post('/api/dog/remove', Dog.removeDog)
+    router.post('/api/dog/update', Dog.updateDog)
 
     //维权统计
     router.post('/statistic',Statistic.addAuthUser)
@@ -87,6 +89,27 @@ module.exports = function () {
         }
     })
     router.get('/api/currentuser',async function (ctx, next){
+        console.log('进入获取用户接口了')
+        let code = ctx.query.code;
+        console.log(code)
+        let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
+        let res=await axios.get(url);
+        console.log(res.data)
+        ctx.status = 200;
+        ctx.body = res.data;
+        // axios.get(tokenURL).then((res)=>{
+        //     ctx.status = 200;
+        //     ctx.body = res;
+        // }).catch((err)=>{
+        //     console.error(err);
+        //     ctx.status = 400;
+        //     ctx.body = {
+        //         message: '获取用户信息失败'
+        //     };
+        // })
+
+    });
+    router.get('/currentuser',async function (ctx, next){
         console.log('进入获取用户接口了')
         let code = ctx.query.code;
         console.log(code)
