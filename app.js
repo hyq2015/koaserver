@@ -41,7 +41,8 @@ let walk=function(modelpath){
 walk(models_path)
 
 
-
+const http=require('http');
+const https=require('https');
 const koa=require('koa')
 const logger=require('koa-logger')
 const session=require('koa-session')
@@ -73,7 +74,10 @@ app.use(bodyParser())
 app.use(cors())
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
-
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/fullchain.pem')
+};
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
@@ -100,7 +104,10 @@ app.use(router.routes())
     .use(router.allowedMethods())
 
 
-
-app.listen(port,()=>{
+// http.createServer(app).listen(port);
+https.createServer(options,app).listen(port,()=>{
     console.log('app is listening at'+port)
-})
+});
+// app.listen(port,()=>{
+//     console.log('app is listening at'+port)
+// })
