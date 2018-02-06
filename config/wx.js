@@ -1,5 +1,5 @@
 const WX={
-    AppID:'wx64af9cec91cc33cb',
-    AppSecret:'b8aad217a9fba4c54cf39e5645ed1946'
+    AppID:'wxe22a4683b6d79ee5',
+    AppSecret:'a3ce41cdd8bb32bba831c8af7f9583ad'
 };
 module.exports=WX;
