@@ -9,7 +9,7 @@ const DB='mongodb://localhost/gen_db'
 //连接数据库
 mongoose.Promise=require('bluebird')
 mongoose.connect(DB,{useMongoClient:true})
-
+const enforceHttps = require('koa-sslify');
 let db = mongoose.connection;
 db.on('error', function(){
     console.log('connection error:')
@@ -72,11 +72,12 @@ app.use(logger())
 app.use(session(CONFIG,app))
 app.use(bodyParser())
 app.use(cors())
+app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
 const options = {
     key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/fullchain.pem')
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
 };
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
@@ -105,7 +106,7 @@ app.use(router.routes())
 
 
 // http.createServer(app).listen(port);
-https.createServer(options,app).listen(port,()=>{
+https.createServer(options,app.callback()).listen(port,()=>{
     console.log('app is listening at'+port)
 });
 // app.listen(port,()=>{
