@@ -199,12 +199,10 @@ exports.getCurrentUser=async (ctx,next)=>{
         ctx.body={
             data:ctx.session.user
         }
-        return
     }else{
         ctx.status=403;
         ctx.body={
             message:'请登录'
         }
-        return
     }
 }

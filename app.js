@@ -76,13 +76,15 @@ app.use(cors())
 app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
-};
+// const options = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
+// };
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
+    // console.log(ctx.host)
+    console.log(user)
     console.log(url)
     // if(url.indexOf('/baiyue/statistic')!=-1){
     //     return next()
@@ -100,15 +102,15 @@ app.use(async (ctx,next) => {
     //         return
     //     }
     // }
-    if(url.indexOf('/app/login')==-1 && url.indexOf('/app/currentUser')==-1 && url.indexOf('/app/userUpdate')==-1){
-        if(!user){
-            ctx.status=403;
-            ctx.body={
-                message:'请登录'
-            };
-            return
-        }
-    }
+    // if(url.indexOf('/app/login')==-1 && url.indexOf('/app/currentUser')==-1 && url.indexOf('/app/userUpdate')==-1){
+    //     if(!user){
+    //         ctx.status=403;
+    //         ctx.body={
+    //             message:'请登录'
+    //         };
+    //         return
+    //     }
+    // }
     return next()
 });
 app.use(router.routes())
@@ -118,9 +120,9 @@ app.use(router.routes())
 http.createServer(app.callback()).listen(80,()=>{
     console.log('http is listening at 80')
 });
-https.createServer(options,app.callback()).listen(port,()=>{
-    console.log('https is listening at'+port)
-});
-// app.listen(port,()=>{
+// https.createServer(options,app.callback()).listen(port,()=>{
+//     console.log('https is listening at'+port)
+// });
+// app.listen('80',()=>{
 //     console.log('app is listening at'+port)
 // })
