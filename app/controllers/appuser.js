@@ -3,6 +3,8 @@ let mongoose=require('mongoose');
 let AppUser=mongoose.model('appuser');
 let xss=require('xss');
 let moment=require('moment');
+let WX = require('../../config/wx');
+
 
 exports.userLogin=async(ctx,next)=>{
     let code = ctx.query.code;
@@ -21,5 +23,12 @@ exports.userLogin=async(ctx,next)=>{
         ctx.body={
             message:e.message
         }
+    }
+};
+exports.currentUser=async(ctx,next)=>{
+    let user=ctx.session.user;
+    ctx.status = 200;
+    ctx.body ={
+        user:user
     }
 };

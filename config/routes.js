@@ -111,6 +111,7 @@ module.exports = function () {
 
     });
     router.get('/app/login',AppUser.userLogin);
+    router.get('/app/currentUser',AppUser.currentUser);
     //小程序
     return router
 };
