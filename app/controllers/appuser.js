@@ -13,8 +13,10 @@ exports.userLogin=async(ctx,next)=>{
     //查询是否有这个openid对应的记录
     let appUser=null;
     try {
-        appUser=await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
+        await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
+        appUser=await AppUser.findOne({openid:xss(res.data.openid)});
         ctx.status = 200;
+        ctx.session.user=appUser;
         ctx.body ={
             user:appUser
         }
