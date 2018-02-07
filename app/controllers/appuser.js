@@ -13,7 +13,9 @@ exports.userLogin=async(ctx,next)=>{
     try {
         appUser=await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true});
         ctx.status = 200;
-        ctx.body =appUser
+        ctx.body ={
+            user:appUser
+        }
     }catch (e){
         ctx.status=500;
         ctx.body={
