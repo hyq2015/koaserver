@@ -8,6 +8,7 @@ let Song = require('../app/controllers/songs');
 let Album = require('../app/controllers/albums');
 let Dog = require('../app/controllers/dog');
 let Statistic = require('../app/controllers/statistics');
+let AppUser = require('../app/controllers/appuser');
 const fs = require('fs');
 let crypto = require('crypto');
 let WX = require('./wx');
@@ -109,13 +110,7 @@ module.exports = function () {
         // })
 
     });
-    router.get('/app/login',async function (ctx, next){
-        let code = ctx.query.code;
-        let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
-        let res=await axios.get(url);
-        ctx.status = 200;
-        ctx.body = res.data;
-    });
+    router.get('/app/login',AppUser.userLogin);
     //小程序
     return router
 };
