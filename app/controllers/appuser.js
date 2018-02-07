@@ -13,11 +13,22 @@ exports.userLogin=async(ctx,next)=>{
     //查询是否有这个openid对应的记录
     let appUser=null;
     try {
-        appUser=await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true});
-        ctx.status = 200;
-        ctx.body ={
-            user:appUser
-        }
+        // appUser=await
+        AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true})
+            .lean().exec((err,doc)=>{
+            if(err){
+                ctx.status=500;
+                ctx.body={
+                    message:err
+                }
+            }else{
+                ctx.status = 200;
+                ctx.body ={
+                    user:doc
+                }
+            }
+        });
+
     }catch (e){
         ctx.status=500;
         ctx.body={

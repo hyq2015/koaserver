@@ -100,7 +100,7 @@ app.use(async (ctx,next) => {
     //         return
     //     }
     // }
-    if(url.indexOf('/app/login')==-1){
+    if(url.indexOf('/app/login')==-1 && url.indexOf('/app/currentUser')==-1){
         if(!user){
             ctx.status=403;
             ctx.body={
