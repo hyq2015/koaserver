@@ -9,12 +9,12 @@ let WX = require('../../config/wx');
 exports.userLogin=async(ctx,next)=>{
     let code = ctx.query.code;
     let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
-    let res=await axios.get(url);
+    let res1=await axios.get(url);
     //查询是否有这个openid对应的记录
     let appUser=null;
     try {
         // appUser=await
-        AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true})
+        AppUser.update({openid:xss(res1.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true})
             .lean().exec((err,doc)=>{
             if(err){
                 ctx.status=500;
@@ -22,10 +22,11 @@ exports.userLogin=async(ctx,next)=>{
                     message:err
                 }
             }else{
-                ctx.status = 200;
-                ctx.body ={
-                    user:doc
-                }
+                return res.end(JSON.stringify(doc));
+                // ctx.status = 200;
+                // ctx.body ={
+                //     user:doc
+                // }
             }
         });
 
