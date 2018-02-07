@@ -36,10 +36,8 @@ exports.currentUser=async(ctx,next)=>{
     }
 };
 exports.updateUser=async(ctx,next)=>{
-    console.log(ctx.request.body)
-    console.log(ctx.session.user)
     let user = ctx.request.body.user;
-    let sessionUser=ctx.session.user;
+    let openid=ctx.request.body.openid;
     //查询是否有这个openid对应的记录
     let appUser=null;
     let updateObj={};
@@ -49,8 +47,8 @@ exports.updateUser=async(ctx,next)=>{
     updateObj.province=user.province;
     updateObj.lastLoginTime=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     try {
-        await AppUser.update({openid:xss(sessionUser.openid)},updateObj,{upsert:true,new:true});
-        appUser=await AppUser.findOne({openid:xss(sessionUser.openid)});
+        await AppUser.update({openid:xss(openid)},updateObj,{upsert:true,new:true});
+        appUser=await AppUser.findOne({openid:xss(openid)});
         ctx.status = 200;
         ctx.session.user=appUser;
         ctx.body ={
