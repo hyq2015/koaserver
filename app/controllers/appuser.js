@@ -15,8 +15,9 @@ exports.userLogin=async(ctx,next)=>{
     try {
         await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
         appUser=await AppUser.findOne({openid:xss(res.data.openid)});
-        ctx.status = 200;
         ctx.session.user=appUser;
+        console.log(ctx.session.user)
+        ctx.status = 200;
         ctx.body ={
             user:appUser
         }
