@@ -35,7 +35,7 @@ exports.currentUser=async(ctx,next)=>{
     }
 };
 exports.updateUser=async(ctx,next)=>{
-    let user = ctx.body.user;
+    let user = ctx.request.body.user;
     //查询是否有这个openid对应的记录
     let appUser=null;
     let updateObj={};
