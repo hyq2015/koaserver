@@ -6,7 +6,7 @@ let moment=require('moment');
 let WX = require('../../config/wx');
 
 
-exports.userLogin=async(ctx,next)=>{
+exports.userLogin=async(ctx,res)=>{
     let code = ctx.query.code;
     let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
     let res1=await axios.get(url);
