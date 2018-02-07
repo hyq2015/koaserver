@@ -35,6 +35,8 @@ exports.currentUser=async(ctx,next)=>{
     }
 };
 exports.updateUser=async(ctx,next)=>{
+    console.log(ctx.request.body)
+    console.log(ctx.session.user)
     let user = ctx.request.body.user;
     let sessionUser=ctx.session.user;
     //查询是否有这个openid对应的记录
