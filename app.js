@@ -106,9 +106,11 @@ app.use(router.routes())
     .use(router.allowedMethods())
 
 
-// http.createServer(app).listen(port);
+http.createServer(app.callback()).listen(80,()=>{
+    console.log('http is listening at 80')
+});
 https.createServer(options,app.callback()).listen(port,()=>{
-    console.log('app is listening at'+port)
+    console.log('https is listening at'+port)
 });
 // app.listen(port,()=>{
 //     console.log('app is listening at'+port)
