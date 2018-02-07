@@ -34,3 +34,29 @@ exports.currentUser=async(ctx,next)=>{
         user:user
     }
 };
+exports.updateUser=async(ctx,next)=>{
+    let user = ctx.body.user;
+    //查询是否有这个openid对应的记录
+    let appUser=null;
+    let updateObj={};
+    updateObj.avatarUrl=user.avatarUrl;
+    updateObj.city=user.city;
+    updateObj.country=user.country;
+    updateObj.province=user.province;
+    updateObj.lastLoginTime=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    try {
+        await AppUser.update({openid:xss(res.data.openid)},updateObj,{upsert:true,new:true});
+        appUser=await AppUser.findOne({openid:xss(res.data.openid)});
+        ctx.status = 200;
+        ctx.session.user=appUser;
+        ctx.body ={
+            user:appUser
+        }
+    }catch (e){
+        ctx.status=500;
+        ctx.body={
+            message:e.message
+        }
+    }
+};
+
