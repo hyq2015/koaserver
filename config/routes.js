@@ -109,12 +109,13 @@ module.exports = function () {
         // })
 
     });
-    router.get('/app/currentuser',async function (ctx, next){
+    router.get('/app/login',async function (ctx, next){
         let code = ctx.query.code;
         let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
         let res=await axios.get(url);
         ctx.status = 200;
         ctx.body = res.data;
     });
+    //小程序
     return router
 };
