@@ -4,7 +4,7 @@ let AppUser=mongoose.model('appuser');
 let xss=require('xss');
 let moment=require('moment');
 let WX = require('../../config/wx');
-
+let cache=require('../../config/redis');
 
 exports.userLogin=async(ctx,next)=>{
     let code = ctx.query.code;
@@ -12,6 +12,7 @@ exports.userLogin=async(ctx,next)=>{
     let res=await axios.get(url);
     //查询是否有这个openid对应的记录
     let appUser=null;
+    cache.set('userName','huangyunqi');
     try {
         await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
         appUser=await AppUser.findOne({openid:xss(res.data.openid)});

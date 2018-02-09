@@ -49,7 +49,7 @@ const logger=require('koa-logger');
 const session=require('koa-session');
 const bodyParser=require('koa-bodyparser');
 const cors=require('koa-cors');
-// let cache=require('./config/redis');
+let cache=require('./config/redis');
 let app=new koa();
 // let server = require('http').Server(app.callback());
 // let io = require('socket.io')(server);
@@ -75,7 +75,7 @@ app.use(session(CONFIG,app))
 app.use(bodyParser())
 app.use(cors())
 //把请求强制转换成https
-// app.use(enforceHttps());
+app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
 // const options = {
@@ -85,7 +85,7 @@ app.use(require('koa-static')(__dirname+'/dist/'));
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
-    // console.log(cache.get('userName'));
+    console.log(cache.get('userName'));
     // console.log(ctx.host)
     console.log(user)
     console.log(url)
@@ -123,9 +123,9 @@ app.use(router.routes())
 http.createServer(app.callback()).listen(80,()=>{
     console.log('http is listening at 80')
 });
-// https.createServer(options,app.callback()).listen(port,()=>{
-//     console.log('https is listening at'+port)
-// });
+https.createServer(options,app.callback()).listen(port,()=>{
+    console.log('https is listening at'+port)
+});
 // app.listen('80',()=>{
 //     console.log('app is listening at'+port)
 // })
