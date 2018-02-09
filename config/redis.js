@@ -1,5 +1,9 @@
 const redis=require('redis');
-let client=redis.createClient();
+let redis_config = {
+    "host": "",
+    "port": 6379
+};
+let client=redis.createClient(redis_config);
 client.on('connect', function () {
     client.set('REDIS_TEST', 'REDIS存储测试', redis.print)
     client.get('REDIS_TEST', redis.print)
