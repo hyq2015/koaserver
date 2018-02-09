@@ -78,10 +78,10 @@ app.use(cors())
 app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
-// const options = {
-//     key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
-//     cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
-// };
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
+};
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
