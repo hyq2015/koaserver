@@ -31,7 +31,8 @@ exports.userLogin=async(ctx,next)=>{
 };
 exports.currentUser=async(ctx,next)=>{
     console.log('当前用户---------------------');
-    console.log(cache.getKey('userName'));
+    let currentUser=await cache.getKey('userName');
+    console.log(currentUser)
     let user=ctx.session.user;
     ctx.status = 200;
     ctx.body ={
