@@ -5,22 +5,24 @@ let xss=require('xss');
 let moment=require('moment');
 let WX = require('../../config/wx');
 let cache=require('../../config/redis');
-
+const uuidv4 = require('uuid/v4');
 exports.userLogin=async(ctx,next)=>{
     let code = ctx.query.code;
     let url='https://api.weixin.qq.com/sns/jscode2session?appid='+WX.AppID+'&secret='+WX.AppSecret+'&js_code='+code+'&grant_type=authorization_code';
     let res=await axios.get(url);
     //查询是否有这个openid对应的记录
     let appUser=null;
-    cache.setKey({key:'userName',value:'huangyunqi'});
+
     try {
         await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
         appUser=await AppUser.findOne({openid:xss(res.data.openid)});
         ctx.session.user=appUser;
-        console.log(ctx.session.user)
+        let uuid=uuidv4();
+        await cache.setKey(uuid,appUser);
         ctx.status = 200;
         ctx.body ={
-            user:appUser
+            user:appUser,
+            token:uuid
         }
     }catch (e){
         ctx.status=500;
@@ -31,7 +33,9 @@ exports.userLogin=async(ctx,next)=>{
 };
 exports.currentUser=async(ctx,next)=>{
     console.log('当前用户---------------------');
-    let currentUser=await cache.getKey('userName');
+    let currentToken=ctx.cookies.get('SESSION');
+    console.log(currentToken)
+    let currentUser=await cache.getKey(currentToken);
     console.log(currentUser)
     let user=ctx.session.user;
     ctx.status = 200;
