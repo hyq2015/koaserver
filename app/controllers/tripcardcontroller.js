@@ -20,7 +20,7 @@ exports.addCard=async(ctx,next)=>{
             * 每一年的最后一条记录才打上标签
             * */
             let year=new Date().getFullYear();
-            let oldCardList=await Tripcard.update({'year':year,'yearLastTag':true},{$set:{'yearLastTag':false}});
+            let oldCardList=await Tripcard.update({year:year,yearLastTag:true},{$set:{yearLastTag:false}},{multi:true});
             console.log('老记录------------')
             console.log(oldCardList)
             let saveObj={
