@@ -70,10 +70,19 @@ exports.getCardList=async (ctx,next)=>{
             .skip((page-1)*pageSize)
             .sort({creation:-1})
             .limit(pageSize);
-
+        let last=false;
+        console.log('列表项-------------------')
+        console.log(cardList)
+        if(!cardList){
+            cardList=[];
+        }
+        if(cardList.length<pageSize){
+            last=true;
+        }
         ctx.status=200;
         ctx.body={
-            data:cardList
+            content:cardList,
+            last:last
         }
     } catch (e) {
         console.log(e.message)
