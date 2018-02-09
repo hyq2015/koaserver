@@ -10,6 +10,8 @@ client.on('connect', function () {
 })
 client.getKey=function (key) {
     client.get(key,function (err,res) {
+        console.log('当前用户---------------------');
+        console.log(res)
         if(err){
             return '没有结果'
         }else{
