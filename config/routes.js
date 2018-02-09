@@ -4,6 +4,7 @@ let Movie = require('../app/controllers/movies');
 let Codetemplate = require('../app/controllers/codetemplateController');
 let Middlewares = require('../app/middlewares/middleware');
 let Qiniu = require('../app/controllers/qiniu');
+let QiniuCloud = require('../app/controllers/rickyCloudqiniu');
 let Song = require('../app/controllers/songs');
 let Album = require('../app/controllers/albums');
 let Dog = require('../app/controllers/dog');
@@ -38,7 +39,7 @@ module.exports = function () {
     router.get('/api/song/list', Song.songList)
 
     router.get('/api/uptoken', Qiniu.uptoken)
-    router.get('/app/api/uptoken', Qiniu.uptoken)
+    router.get('/app/api/uptoken', QiniuCloud.uptoken)
 
     //相册
     router.post('/api/album/add', Album.addAlbum)
