@@ -37,10 +37,9 @@ exports.currentUser=async(ctx,next)=>{
     console.log(currentToken)
     let currentUser=await cache.getKey(currentToken);
     console.log(currentUser)
-    let user=ctx.session.user;
     ctx.status = 200;
     ctx.body ={
-        user:user
+        user:currentUser
     }
 };
 exports.updateUser=async(ctx,next)=>{
