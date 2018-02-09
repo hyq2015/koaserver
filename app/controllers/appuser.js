@@ -12,7 +12,7 @@ exports.userLogin=async(ctx,next)=>{
     let res=await axios.get(url);
     //查询是否有这个openid对应的记录
     let appUser=null;
-    cache.set({key:'userName',value:'huangyunqi'});
+    cache.setKey({key:'userName',value:'huangyunqi'});
     try {
         await AppUser.update({openid:xss(res.data.openid)},{lastLoginTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')},{upsert:true,new:true});
         appUser=await AppUser.findOne({openid:xss(res.data.openid)});

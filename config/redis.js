@@ -4,7 +4,7 @@ client.on('connect', function () {
     client.set('REDIS_TEST', 'REDIS存储测试', redis.print)
     client.get('REDIS_TEST', redis.print)
 })
-client.get=function (key) {
+client.getKey=function (key) {
     client.get(key,function (err,res) {
         if(err){
             return '没有结果'
@@ -14,7 +14,7 @@ client.get=function (key) {
 
     })
 };
-client.set=function (obj) {
+client.setKey=function (obj) {
     client.set(obj.key,obj.value,function (err,res) {
         if(err){
             return '存储失败'

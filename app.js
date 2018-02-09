@@ -86,7 +86,7 @@ app.use(async (ctx,next) => {
     // let user=ctx.session.user;
     let url=ctx.request.url;
     console.log('当前用户---------------------');
-    console.log(cache.get('userName'));
+    console.log(cache.getKey('userName'));
     // console.log(ctx.host)
     // console.log(user)
     // console.log(url)
