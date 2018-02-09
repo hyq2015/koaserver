@@ -50,9 +50,10 @@ module.exports = function () {
     router.post('/api/dog/add', Dog.addDog)
     router.post('/api/dog/remove', Dog.removeDog)
     router.post('/api/dog/update', Dog.updateDog)
+
     //小程序
     router.post('/app/savetripcard',Middlewares.validateLogin, TripCard.addCard)
-    router.post('/app/tripCardList',Middlewares.validateLogin, TripCard.getCardList)
+    router.get('/app/tripCardList',Middlewares.validateLogin, TripCard.getCardList)
 
     //维权统计
     router.post('/statistic',Statistic.addAuthUser)

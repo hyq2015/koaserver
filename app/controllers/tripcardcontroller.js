@@ -15,6 +15,7 @@ exports.addCard=async(ctx,next)=>{
             let currentUser=ctx.currentUser;
             console.log('当前用户---------------')
             console.log(currentUser)
+            //存储卡片的时候,先要去查询这条卡片是不是当年的第一条,如果是,需要打上标签 yearLastTag=>true
             card=await new Tripcard({
                 desc:body.desc,
                 imgurl:body.imgurl,
