@@ -38,6 +38,7 @@ module.exports = function () {
     router.get('/api/song/list', Song.songList)
 
     router.get('/api/uptoken', Qiniu.uptoken)
+    router.get('/app/api/uptoken', Qiniu.uptoken)
 
     //相册
     router.post('/api/album/add', Album.addAlbum)
