@@ -9,9 +9,8 @@ client.on('connect', function () {
     client.get('REDIS_TEST', redis.print)
 })
 client.getKey=function (key) {
-    client.get(key,function (err,res) {
-        console.log('当前用户---------------------');
-        console.log(res)
+    return client.get(key,function (err,res) {
+
         if(err){
             return '没有结果'
         }else{
