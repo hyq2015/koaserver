@@ -16,7 +16,10 @@ let TripCardSchema=new mongoose.Schema({
     }
 });
 TripCardSchema.add({
-    yearLastTag:Boolean,
+    yearLastTag:{
+        type:Boolean,
+        default:true
+    },
     creationDesc:{
         type:String,
         default:moment(Date.now()).format('M')+'月'+moment(Date.now()).format('D')+'日'
