@@ -64,11 +64,12 @@ exports.getCardList=async (ctx,next)=>{
         /*
         * 逆序查询,时间最近的最先返回
         * **/
-        let totalCount=await Tripcard.count();
+        // let totalCount=await Tripcard.count();
         // skip((page-1)*pageSize)
-        cardList=await Tripcard.find({'creator._id':currentUser._id}).limit(pageSize)
-            .skip(totalCount-page*pageSize)
-            .sort({creation:-1});
+        cardList=await Tripcard.find({'creator._id':currentUser._id})
+            .skip((page-1)*pageSize)
+            .sort({creation:-1})
+            .limit(pageSize);
 
         ctx.status=200;
         ctx.body={
