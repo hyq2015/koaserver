@@ -61,7 +61,7 @@ exports.getCardList=async (ctx,next)=>{
     let cardList=null;
     let currentUser=ctx.currentUser;
     try {
-        cardList=await Tripcard.find({'creator._id':currentUser._id}).limit(pageSize).skip((page-1)*pageSize);
+        cardList=await Tripcard.find({'creator._id':currentUser._id}).limit(pageSize).skip((page-1)*pageSize).sort({creation:-1});
 
         ctx.status=200;
         ctx.body={
