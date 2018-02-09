@@ -83,12 +83,13 @@ const options = {
     cert: fs.readFileSync('/etc/letsencrypt/live/www.r1992.com/cert.pem')
 };
 app.use(async (ctx,next) => {
-    let user=ctx.session.user;
+    // let user=ctx.session.user;
     let url=ctx.request.url;
+    console.log('当前用户---------------------');
     console.log(cache.get('userName'));
     // console.log(ctx.host)
-    console.log(user)
-    console.log(url)
+    // console.log(user)
+    // console.log(url)
     // if(url.indexOf('/baiyue/statistic')!=-1){
     //     return next()
     // }else
