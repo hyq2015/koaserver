@@ -44,11 +44,12 @@ walk(models_path)
 
 const http=require('http');
 const https=require('https');
-const koa=require('koa')
-const logger=require('koa-logger')
-const session=require('koa-session')
-const bodyParser=require('koa-bodyparser')
-const cors=require('koa-cors')
+const koa=require('koa');
+const logger=require('koa-logger');
+const session=require('koa-session');
+const bodyParser=require('koa-bodyparser');
+const cors=require('koa-cors');
+// let cache=require('./config/redis');
 let app=new koa();
 // let server = require('http').Server(app.callback());
 // let io = require('socket.io')(server);
@@ -73,7 +74,8 @@ app.use(logger())
 app.use(session(CONFIG,app))
 app.use(bodyParser())
 app.use(cors())
-app.use(enforceHttps());
+//把请求强制转换成https
+// app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
 // const options = {
@@ -83,6 +85,7 @@ app.use(require('koa-static')(__dirname+'/dist/'));
 app.use(async (ctx,next) => {
     let user=ctx.session.user;
     let url=ctx.request.url;
+    // console.log(cache.get('userName'));
     // console.log(ctx.host)
     console.log(user)
     console.log(url)

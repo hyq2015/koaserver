@@ -45,6 +45,7 @@ exports.updateUser=async(ctx,next)=>{
     updateObj.city=user.city;
     updateObj.country=user.country;
     updateObj.province=user.province;
+    updateObj.nickName=user.nickName;
     updateObj.lastLoginTime=moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     try {
         await AppUser.update({openid:xss(openid)},updateObj,{upsert:true,new:true});

@@ -5,6 +5,7 @@ let moment=require('moment');
 let User=mongoose.model('user')
 let xss=require('xss')
 let defaultKeys=User.schema.obj;
+let cache=require('../../config/redis');
 
 exports.getList=async function(ctx,next){
     let pageSize=10;
@@ -57,6 +58,7 @@ exports.userLogin=async(ctx,next)=>{
             nickname:xss(nickname)
         })
         if(returnBody && returnBody.mobile){
+            cache.set('userName','huangyunqi');
             ctx.session.user=returnBody;
             ctx.status=200;
             ctx.body={
