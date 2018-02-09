@@ -1,4 +1,6 @@
-let mongoose=require('mongoose')
+let mongoose=require('mongoose');
+let cache=require('../../config/redis');
+
 exports.hasToken=async (ctx,next)=>{
     if(!ctx.query.token){
         ctx.status=400;
@@ -54,3 +56,17 @@ exports.findRecord=async(ctx,next,modelname)=>{
     }
     
 }
+
+exports.validateLogin=async(ctx,next)=>{
+    let currentToken=ctx.cookies.get('SESSION');
+    if(!currentToken){
+        ctx.status=403;
+        ctx.body={
+            message:'请登录'
+        };
+    }else{
+        let currentUser=await cache.getKey(currentToken);
+        ctx.currentUser=currentUser;
+        return next()
+    }
+};

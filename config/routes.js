@@ -10,6 +10,7 @@ let Album = require('../app/controllers/albums');
 let Dog = require('../app/controllers/dog');
 let Statistic = require('../app/controllers/statistics');
 let AppUser = require('../app/controllers/appuser');
+let TripCard = require('../app/controllers/tripcardcontroller');
 const fs = require('fs');
 let crypto = require('crypto');
 let WX = require('./wx');
@@ -39,7 +40,7 @@ module.exports = function () {
     router.get('/api/song/list', Song.songList)
 
     router.get('/api/uptoken', Qiniu.uptoken)
-    router.get('/app/api/uptoken', QiniuCloud.uptoken)
+    router.get('/app/uptoken', QiniuCloud.uptoken)
 
     //相册
     router.post('/api/album/add', Album.addAlbum)
@@ -49,6 +50,9 @@ module.exports = function () {
     router.post('/api/dog/add', Dog.addDog)
     router.post('/api/dog/remove', Dog.removeDog)
     router.post('/api/dog/update', Dog.updateDog)
+    //小程序
+    router.post('/app/savetripcard',Middlewares.validateLogin, TripCard.addCard)
+    router.post('/app/tripCardList',Middlewares.validateLogin, TripCard.getCardList)
 
     //维权统计
     router.post('/statistic',Statistic.addAuthUser)
