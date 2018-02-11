@@ -75,7 +75,7 @@ app.use(session(CONFIG,app))
 app.use(bodyParser())
 app.use(cors())
 //把请求强制转换成https
-app.use(enforceHttps());
+// app.use(enforceHttps());
 //配置静态资源请求路径
 app.use(require('koa-static')(__dirname+'/dist/'));
 // const options = {
