@@ -2,7 +2,7 @@
 //加载所有表,在mongodb中建模
 // let port='8989';
 // let port='80';
-let port='8090';
+let port='8080';
 const fs=require('fs')
 const path=require('path')
 const mongoose=require('mongoose')
@@ -17,26 +17,26 @@ db.on('error', function(){
 });
 db.once('open', function() {
     console.log("we're connected!")
-  // we're connected!
+    // we're connected!
 });
 
 let models_path=path.join(__dirname,'/app/models')
 
 let walk=function(modelpath){
     fs.readdirSync(modelpath)
-    .forEach(function(file){
-        let filepath=path.join(modelpath,'/'+file)
-        let stat=fs.statSync(filepath)
-        // console.log(filepath)
-        // console.log(stat)
-        if(stat.isFile()){
-            if(/(.*)\.js/.test(file)){
-                require(filepath)
+        .forEach(function(file){
+            let filepath=path.join(modelpath,'/'+file)
+            let stat=fs.statSync(filepath)
+            // console.log(filepath)
+            // console.log(stat)
+            if(stat.isFile()){
+                if(/(.*)\.js/.test(file)){
+                    require(filepath)
+                }
+            }else if(stat.isDirectory()) {
+                walk(filepath)
             }
-        }else if(stat.isDirectory()) {
-            walk(filepath)
-        }
-    })
+        })
 }
 
 walk(models_path)
@@ -66,7 +66,7 @@ const CONFIG = {
     httpOnly: true, /** (boolean) httpOnly or not (default true) */
     signed: true, /** (boolean) signed or not (default true) */
     rolling: false, /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. default is false **/
-  };
+};
 
 let router=require('./config/routes')()
 app.keys=['genwoshua'];//会话中间件cookie-session加密
@@ -124,7 +124,7 @@ app.use(router.routes())
 
 
 http.createServer(app.callback()).listen(port,()=>{
-    console.log('http is listening at '+port)
+    console.log('http is listening at'+port)
 });
 
 // https.createServer(options,app.callback()).listen(port,()=>{
