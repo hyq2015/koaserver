@@ -3,7 +3,7 @@ let Tripcard=mongoose.model('tripcard')
 let xss=require('xss');
 exports.addCard=async(ctx,next)=>{
     let body=ctx.request.body;
-    if(!body.desc || !body.imgurl){
+    if(!body.desc || !body.imgurl || !body.public){
         ctx.status=400;
         ctx.body={
             message:'缺少必填字段'
@@ -27,7 +27,8 @@ exports.addCard=async(ctx,next)=>{
                 desc:body.desc,
                 imgurl:body.imgurl,
                 creator:currentUser,
-                yearLastTag:true
+                yearLastTag:true,
+                public:body.public
             };
             card=await new Tripcard(saveObj).save();
             ctx.status=200;
