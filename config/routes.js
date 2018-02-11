@@ -54,6 +54,7 @@ module.exports = function () {
     //小程序
     router.post('/app/savetripcard',Middlewares.validateLogin, TripCard.addCard)
     router.get('/app/tripCardList',Middlewares.validateLogin, TripCard.getCardList)
+    router.get('/app/allCardList',Middlewares.validateLogin, TripCard.getAllCardList)
 
     //维权统计
     router.post('/statistic',Statistic.addAuthUser)

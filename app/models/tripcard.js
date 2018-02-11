@@ -27,6 +27,10 @@ TripCardSchema.add({
     year:{
         type:String,
         default:moment(Date.now()).format('YYYY')
+    },
+    public:{
+        type:Boolean,
+        default:false
     }
 });
 

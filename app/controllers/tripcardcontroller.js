@@ -43,7 +43,9 @@ exports.addCard=async(ctx,next)=>{
         }
     }
 };
-
+    /*
+    * 获取个人卡片列表
+    * */
 exports.getCardList=async (ctx,next)=>{
     let pageSize=10;
     let page=1;
@@ -63,8 +65,9 @@ exports.getCardList=async (ctx,next)=>{
     try {
         /*
         * 逆序查询,时间最近的最先返回
+        * 不应该获取当前表的总个数,而是获取当前用户对应的卡片总个数
         * **/
-        let totalCount=await Tripcard.count();
+        let totalCount=await Tripcard.count({'creator._id':currentUser._id});
         // skip((page-1)*pageSize)
         cardList=await Tripcard.find({'creator._id':currentUser._id})
             .skip((page-1)*pageSize)
@@ -89,5 +92,51 @@ exports.getCardList=async (ctx,next)=>{
         ctx.throw(500,e.message)
 
     }
-}
+};
+exports.getAllCardList=async (ctx,next)=>{
+    let pageSize=10;
+    let page=1;
+    console.log(ctx.query);//获取GET方法请求参数
+    if(ctx.query.pageSize && ctx.query.pageNo){
+        pageSize=Number(ctx.query.pageSize)
+        page=Number(ctx.query.pageNo)
+    }else{
+        ctx.status=400;
+        ctx.body={
+            message:'缺少请求参数'
+        };
+        return
+    }
+    let cardList=null;
+    try {
+        /*
+        * 逆序查询,时间最近的最先返回
+        * 不应该获取当前表的总个数,而是获取当前用户对应的卡片总个数
+        * **/
+        let totalCount=await Tripcard.count({'public':true});
+        // skip((page-1)*pageSize)
+        cardList=await Tripcard.find({'public':true})
+            .skip((page-1)*pageSize)
+            .sort({creation:-1})
+            .limit(pageSize);
+        let last=false;
+        console.log('一共多少条-------------------');
+        console.log(totalCount);
+        if(!cardList){
+            cardList=[];
+        }
+        if(totalCount<=pageSize*page){
+            last=true;
+        }
+        ctx.status=200;
+        ctx.body={
+            content:cardList,
+            last:last
+        }
+    } catch (e) {
+        console.log(e.message)
+        ctx.throw(500,e.message)
+
+    }
+};
 
